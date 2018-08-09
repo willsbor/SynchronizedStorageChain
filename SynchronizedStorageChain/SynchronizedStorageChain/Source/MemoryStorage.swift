@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class MemoryStorage<T: Equatable>: SynchronizedDataProviding {
+public class MemoryStorage<T>: SynchronizedDataProviding {
     public typealias Value = T
     
     /// There is no way to be modified by other method

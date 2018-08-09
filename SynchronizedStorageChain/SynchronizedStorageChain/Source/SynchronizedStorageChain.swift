@@ -10,7 +10,7 @@ import Foundation
 
 /// providing the instance of the Value
 public protocol SynchronizedDataProviding: class {
-    associatedtype Value: Equatable
+    associatedtype Value
     
     /// try to notify(return) the new value if carryed value is modified(out of date)
     var valueBeModifiedHandler: ((_ newValue: Value) -> Void)? { get set }
