@@ -12,7 +12,7 @@ public class MemoryStorage<T>: SynchronizedDataProviding {
     public typealias Value = T
     
     /// There is no way to be modified by other method
-    public var valueBeModifiedHandler: ((T) -> Void)?
+    public var valueBeModifiedHandler: (() -> Void)?
     
     private var value: T
     

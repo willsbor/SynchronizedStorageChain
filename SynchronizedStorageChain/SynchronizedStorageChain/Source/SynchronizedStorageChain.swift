@@ -13,7 +13,7 @@ public protocol SynchronizedDataProviding: class {
     associatedtype Value
     
     /// try to notify(return) the new value if carryed value is modified(out of date)
-    var valueBeModifiedHandler: ((_ newValue: Value) -> Void)? { get set }
+    var valueBeModifiedHandler: (() -> Void)? { get set }
     
     /// return the value
     ///
@@ -36,12 +36,12 @@ public class SynchronizedStorageChain<MainProvider: SynchronizedDataProviding, U
     
     private var isUnderlyingProviderBeUpdated = false
     
-    public var valueBeModifiedHandler: ((_ newValue: MainProvider.Value) -> Void)?
+    public var valueBeModifiedHandler: (() -> Void)?
     
     public func getValue() throws -> MainProvider.Value {
         if isUnderlyingProviderBeUpdated, let underlyingProvider = underlyingProvider {
             let newValue = try underlyingProvider.getValue()
-            valueBeModifiedHandler?(newValue)
+            valueBeModifiedHandler?()
             try provider.setValue(newValue)
         }
         
@@ -56,7 +56,7 @@ public class SynchronizedStorageChain<MainProvider: SynchronizedDataProviding, U
     public init(_ provider: MainProvider, underlyingProvider: UnderlyingProvider) {
         self.provider = provider
         self.underlyingProvider = underlyingProvider
-        self.underlyingProvider?.valueBeModifiedHandler = { [unowned self] (_) -> Void in
+        self.underlyingProvider?.valueBeModifiedHandler = { [unowned self] () -> Void in
             self.isUnderlyingProviderBeUpdated = true
         }
     }
